@@ -44,11 +44,12 @@ def main():
     except AssertionError:
         print "Login failed!"
 
-    # get match URL's
-    print "Extracting the latest matches..."
-    matchurls = extractMatches(browser)
+    while True:
+        # get match URL's
+        print "Extracting the latest matches..."
+        matchurls = extractMatches(browser)
 
-    # visit each match
-    visitMatches(browser, matchurls, 5000)
+        # visit each match
+        visitMatches(browser, matchurls, 5000)
 
 main()
