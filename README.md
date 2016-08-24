@@ -1,0 +1,2 @@
+# okcupidbot
+Automation for OkCupid
