@@ -1,2 +1,2 @@
-# okcupidbot
-Automation for OkCupid
+# wingbot
+Automation for online dating websites
