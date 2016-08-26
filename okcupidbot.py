@@ -1,4 +1,4 @@
-import sys, time, itertools
+import sys, time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
@@ -52,27 +52,18 @@ def visitMatches(driver, matchurls, f, timeout):
         uname = url[32:url.find('?')]
 
         if uname not in prevvisits:
-            atleastonevisit = True
-            print "Visiting user" + uname
+            print "Visiting user " + uname
             driver.get(url)
 
             prevvisits.append(uname)
             f.write(uname + '\n')
 
+            atleastonevisit = True
             time.sleep(timeout/1000.0)
         else:
             print "User " + uname + " has already been visited!"
 
     assert atleastonevisit, "list of unique users has been exhausted!"
-
-def shutDown(driver, f):
-    print "Shutting down OkCupidBot..."
-    f.close()
-
-    try:
-        driver.close()
-    except:
-        pass    # webdriver likes to complain when it's killed by ctrl-c
 
 def main():
     print "Starting OkCupidBot..."
@@ -95,12 +86,17 @@ def main():
             # visit each match
             visitMatches(browser, matchurls, historyfile, 5000)
 
-    except AssertionError as e:
+    except (AssertionError, KeyboardInterrupt) as e:
         print e
-        shutDown(browser, historyfile)
 
-    except KeyboardInterrupt:
-        shutDown(browser, historyfile)
-        print "Done!"
+    print "Shutting down OkCupidBot..."
+    historyfile.close()
+
+    try:
+        browser.close()
+    except:
+        pass    # webdriver likes to complain when it's killed by ctrl-c
+
+    print "Done!"
 
 main()
